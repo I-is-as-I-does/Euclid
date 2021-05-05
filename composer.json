@@ -1,5 +1,5 @@
 {
-    "name": "exo-project/euclid",
+    "name": "exoproject/euclid",
     "description": "Simple PHP tool to map your classes and methods, so you can execute them from the comfort of your command line interface.",
     "type": "library",
     "keywords" :["php", "CLI"],
