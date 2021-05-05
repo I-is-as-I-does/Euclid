@@ -1,15 +1,5 @@
 {
     "maps": {
-        "demo": {
-            "className": "ExoProject\\EuclidTest\\DemoDoer",
-            "cmdList": {
-                "DirTree": [
-                    "parentdir",
-                    "subdirs|opt"
-                ],
-                "File": []
-            },
-            "methodHook": "build*"
-        }
+        
     }
 }

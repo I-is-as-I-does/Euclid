@@ -4,7 +4,7 @@
     "type": "library",
     "keywords" :["php", "CLI"],
     "homepage":"https://github.com/I-is-as-I-does/Euclid",
-    "license": "GPL-3.0-or-later",
+    "license": "MIT",
     "readme":"README.md",
     "authors": [
         {
