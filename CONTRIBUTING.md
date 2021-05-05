@@ -23,12 +23,13 @@ For code contribution, please follow **GitHub Workflow** principles:
 
 ## Style
  
- #### Generalities
+ ### Generalities
 Please note that this project is usually written in a quite **verbose** manner; short syntax being avoided.  
 Any third party dependency addition must be strongly motivated.
+
 And documentation of why-it-was-done-this-way, *especially* in the context of an odd case, is very much encouraged.
 
-#### Commit Messages
+### Commit Messages
 Please try to start your commit messages with one or more of the following keywords:
 - *wip*: for work in progress
 - *config*: changes in yml/json config files for example
@@ -40,20 +41,20 @@ Please try to start your commit messages with one or more of the following keywo
 - *opti*: optimization / performance amelioration
 - *docs*: added doc or comment
 
-#### Inline Comments
+### Inline Comments
 
 Please try to start your inline comments with one of the following tags:
 - *@doc*: for quick local code documentation
 - *@todo*: to indicate something that's not done yet, but will need to be
 
-#### Naming things
+### Naming things
 If you wish to shorten the name of a file / class / method / function / variable / property / etc. : the general convention is to keep the first vowel, and then skip the rest of them. Example: 
 
 > workreviews -> workrvws
 
 But feel free to adapt this rule; main goal is a high code readability.
 
-#### Specifics
+### Specifics
 
 Projects with PHP: interfaces are a requirement.
 Projects that includes JS and/or CSS will have additionnal style guides; please refers to those if applicable.
