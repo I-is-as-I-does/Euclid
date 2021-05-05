@@ -57,6 +57,7 @@ But feel free to adapt this rule; main goal is a high code readability.
 ### Specifics
 
 Projects with PHP: interfaces are a requirement.
+
 Projects that includes JS and/or CSS will have additionnal style guides; please refers to those if applicable.
 
   
