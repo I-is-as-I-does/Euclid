@@ -1,0 +1,10 @@
+{
+    "maps": {
+        "demo": {
+            "className": "ExoProject\\EuclidTest\\DemoDoer"
+        },
+        "unsetme": {
+            "className": "ExoProject\\Euclid\\EuclidTools"
+        }
+    }
+}

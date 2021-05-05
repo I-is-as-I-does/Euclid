@@ -1,0 +1,23 @@
+{
+    "name": "exo-project/euclid",
+    "description": "Simple PHP tool to map your classes and methods, so you can execute them from the comfort of your command line interface.",
+    "type": "library",
+    "keywords" :["php", "CLI"],
+    "homepage":"https://github.com/I-is-as-I-does/Euclid",
+    "license": "GPL-3.0-or-later",
+    "readme":"README.md",
+    "authors": [
+        {
+            "name": "I-is-as-I-does",
+            "email": "66915011+I-is-as-I-does@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "ExoProject\\Euclid\\": "src",
+            "ExoProject\\EuclidTest\\": "test"
+        }
+    }
+}
