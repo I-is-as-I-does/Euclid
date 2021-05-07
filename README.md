@@ -23,7 +23,7 @@ Simple PHP tool to map your classes and methods, so you can execute them from th
 $ composer require exoproject/euclid
 ```
  
-By default, path to composer autoload is set to `./vendor/autoload.php`  
+By default, path to composer autoload is set to `./composer/autoload.php`  
 If need be, you can edit it in the `./bin/euclid` file.
 
 ## CLI

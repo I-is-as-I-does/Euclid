@@ -12,7 +12,7 @@ if (php_sapi_name() !== 'cli') {
 if ($argc > 1) {
 
     /* @doc: Edit path to composer autoload if need be */
-    require_once('./vendor/autoload.php');
+    require_once('./composer/autoload.php');
 
 
     /* @doc: Edit $argv here if you do so wish */

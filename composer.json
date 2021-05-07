@@ -12,6 +12,9 @@
             "email": "66915011+I-is-as-I-does@users.noreply.github.com"
         }
     ],
+    "config": {
+        "vendor-dir": "composer"
+    },
     "minimum-stability": "stable",
     "require": {},
     "autoload": {
