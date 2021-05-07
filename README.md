@@ -155,7 +155,8 @@ Check out `test/DemoDoer.php` for some nano demo.
 ## Contributing
   
 Yes please! You can take a loot at [CONTRIBUTING](CONTRIBUTING.md).
+This repo also features a [Discussions](https://github.com/I-is-as-I-does/Euclid/discussions) tab.
   
 ## License
 
-This project is under the MIT License; cf. [LICENSE](LICENSE) file for details.
+This project is under the MIT License; cf. [LICENSE](LICENSE) for details.
