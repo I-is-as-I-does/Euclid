@@ -135,7 +135,7 @@ class EuclidMap implements EuclidMap_i
 
     public function getMap()
     {
-        if (!isset($this->cmdMap)) {
+        if (empty($this->cmdMap)) {
             if ($this->setMapFromConfig() === false) {
                 return false;
             }
