@@ -1,5 +1,5 @@
 {
-    "name": "exoproject/euclid",
+    "name": "ssitu/euclid",
     "description": "Simple PHP tool to map your classes and methods, so you can execute them from the comfort of your command line interface.",
     "type": "library",
     "keywords" :["php", "CLI"],
@@ -12,15 +12,12 @@
             "email": "66915011+I-is-as-I-does@users.noreply.github.com"
         }
     ],
-    "config": {
-        "vendor-dir": "composer"
-    },
     "minimum-stability": "stable",
     "require": {},
     "autoload": {
         "psr-4": {
-            "ExoProject\\Euclid\\": "src",
-            "ExoProject\\EuclidTest\\": "test"
+            "SSITU\\Euclid\\": "src",
+            "SSITU\\Demo\\Euclid\\": "demo"
         }
     }
 }

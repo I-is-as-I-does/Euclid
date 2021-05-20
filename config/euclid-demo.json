@@ -1,0 +1,10 @@
+{
+    "maps": {
+        "demo": {
+            "className": "SSITU\\Demo\\Euclid\\DemoDoer"
+        },
+        "unsetme": {
+            "className": "SSITU\\Euclid\\EuclidTools"
+        }
+    }
+}

@@ -1,10 +1,10 @@
 <?php
-/* This file is part of Euclid | ExoProject | (c) 2021 I-is-as-I-does | MIT License */
-namespace ExoProject\Euclid;
+/* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
+namespace SSITU\Euclid;
 
 class EuclidMap implements EuclidMap_i
 {
-    protected $dflt_config_filename = 'euclid_config';
+    protected $dflt_config_path = '/config/euclid.json';
     protected $configPath;
     protected $cmdMap = [];
 
@@ -191,7 +191,7 @@ class EuclidMap implements EuclidMap_i
     
     protected function getDlftConfigPath()
     {
-        return dirname(__DIR__).'\\config\\'.$this->dflt_config_filename.'.json';
+        return dirname(__DIR__).$this->dflt_config_path;
     }
 
     protected function getFallbackPath($path)

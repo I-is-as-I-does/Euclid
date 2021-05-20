@@ -1,6 +1,6 @@
 <?php
-/* This file is part of Euclid | ExoProject | (c) 2021 I-is-as-I-does | MIT License */
-namespace ExoProject\Euclid;
+/* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
+namespace SSITU\Euclid;
 
 interface EuclidMap_i
 {

@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in ExoProject! 
+Thank you for your interest in SSITU! 
 **I would love your input.** 
 You are very much welcomed to:  
   
@@ -84,5 +84,5 @@ All participants thus pledge to act and interact in ways that insure an open, we
 
 ## Licensing
 
-ExoProject open source repos are under **MIT license** – unless otherwise specified.  
+SSITU open source repos are under **MIT license** – unless otherwise specified.  
 Any included contribution shall be under the same license.

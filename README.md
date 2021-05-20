@@ -20,11 +20,11 @@ Simple PHP tool to map your classes and methods, so you can execute them from th
 ### Install 
 
 ```bash
-$ composer require exoproject/euclid
+$ composer require ssitu/euclid
 ```
  
-By default, path to composer autoload is set to `./composer/autoload.php`  
-If need be, you can edit it in the `./bin/euclid` file.
+By default, path to composer autoload is set to `./vendor/autoload.php`  
+If need be, you can edit it in your `./bin/euclid` file.
 
 ## CLI
 
@@ -58,7 +58,7 @@ For each of your classes you wish to call from CLI, you will need to set:
 *Example:* for a class named `DemoDoer`: its key can be `demo` (or... whatever)
 
 * the class full name, preceded by any applicable namespace;
-*Example:*  `ExoProject\Euclid\Test\DemoDoer`
+*Example:*  `SSITU\Euclid\Demo\DemoDoer`
 
 * optionally, a "method hook", aka a method name, or a prefix / sufix found in the names of methods you wish to target – because not *all* methods are meant for CLI.
 	- If it's a sufix, prepend your hook with an `*` : `*yourHook`; if it's a prefix: `yourHook*`.
@@ -68,7 +68,7 @@ For each of your classes you wish to call from CLI, you will need to set:
 `buildDirTree`, `buildFile`, `setBobName`;
 method hook can be set to `build*`; 
 `setBobName` will be not be listed in commands list;
-and in CLI: `php ./bin/euclid demo>DirTree` or `demo>File`
+and in CLI: `php ./bin/euclid demo ->DirTree` or `demo ->File`
 
 `EuclidMap` class will automatically construct a list of commands from there.
 
@@ -82,7 +82,7 @@ If you have a **set list of classes to call**, a dedicated **JSON  file** will b
 {
 	"maps": {
 		"demo": {
-			"className": "ExoProject\\EuclidTest\\DemoDoer",
+			"className": "SSITU\\Demo\\Euclid\\DemoDoer",
 			"cmdList": {
 				"DirTree": ["parentdir", "subdirs|opt"],
 				"File": []
@@ -93,7 +93,7 @@ If you have a **set list of classes to call**, a dedicated **JSON  file** will b
 }
 ```
 
-Default JSON file path : `config/euclid_config.json`
+Default JSON file path : `config/euclid.json`
 
 A redirect to another file will look like this:
 ```json
@@ -150,7 +150,7 @@ Another option is to **extend**  `EuclidMap` class, making its protected propert
 
 Well, I personally use that lib to automate my "build jobs" : compiling, editing, minifying, moving assets around, and sending me a message if something went wrong.
 
-Check out `test/DemoDoer.php` for some nano demo.
+Run `$ php bin/euclid-demo` for some nano demo.
 
 ## Contributing
   

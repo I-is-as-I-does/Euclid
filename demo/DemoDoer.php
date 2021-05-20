@@ -1,8 +1,8 @@
 <?php
-/* This file is part of Euclid | ExoProject | (c) 2021 I-is-as-I-does | MIT License */
+/* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
 
-namespace ExoProject\EuclidTest;
-use ExoProject\Euclid\EuclidTools;
+namespace SSITU\Demo\Euclid;
+use SSITU\Euclid\EuclidTools;
 
 class DemoDoer
 {
@@ -22,7 +22,7 @@ class DemoDoer
     public function buildDirTree($parentdir, $subdirs = false)
     {
         try {
-            $parentpath = dirname(__DIR__).'\\'.$parentdir;
+            $parentpath = dirname(__DIR__).'/'.$parentdir;
             if (!is_dir($parentpath)) {
                 mkdir($parentpath);
                 EuclidTools::msg('buildDirTree done: '.$parentpath, 'green');
@@ -32,7 +32,7 @@ class DemoDoer
                    $subdirs = [$subdirs];
                }
                 foreach ($subdirs as $subdir) {
-                    $subdirpath = $parentpath.'\\'.$subdir;
+                    $subdirpath = $parentpath.'/'.$subdir;
                     if (!is_dir($subdirpath)) {
                         mkdir($subdirpath);
                         EuclidTools::msg('buildDirTree done: '.$subdirpath, 'green');
@@ -47,7 +47,7 @@ class DemoDoer
     }
 
     public function buildFile(){
-        $path = __DIR__.'\\'.'test.txt';
+        $path = __DIR__.'/'.'demo-output.txt';
         $now = date("Y-m-d H:i:s");
         $write = file_put_contents($path,$now.' I\'m still alive'.PHP_EOL,FILE_APPEND | LOCK_EX);
         if($write === false){
