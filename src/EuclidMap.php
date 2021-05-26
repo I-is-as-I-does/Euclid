@@ -2,220 +2,172 @@
 /* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
 namespace SSITU\Euclid;
 
+use SSITU\JackTrades\Jack;
+
 class EuclidMap implements EuclidMap_i
 {
-    protected $dflt_config_path = '/config/euclid.json';
     protected $configPath;
     protected $cmdMap = [];
+    protected $logErr = [];
 
-    public function setCustomConfigPath($path, $permanent = false)
+    public function __construct($path = null)
     {
-        if (file_exists($path)) {
-            if ($permanent !== true) {
-                $this->configPath = $path;
-                return true;
-            }
-            $dfltconfigpath = $this->getDlftConfigPath();
-            $content = $this->getConfigFileContent($dfltconfigpath);
-            if (!is_array($content)) {
-                $content= [];
-            }
-                $content['REDIRECT'] = $path;
-                $save = $this->saveEdits($dfltconfigpath, $content);
-                if ($save !== false) {
-                    $this->configPath = $path;
-                    return true;
-                }
+        if (!empty($path)) {
+            $this->initMap($path);
         }
-        return false;
     }
 
-    public function unsetPermanentCustomConfigPath()
+    public function getLogErr()
     {
-        $path = $this->getDlftConfigPath();
+        return $this->logErr;
+    }
+
+    protected function handleUnvalidClass($key)
+    {
+        $this->logErr[$key] = 'Class ' . $key . ' does not exists';
+        unset($this->cmdMap[$key]);
+        return ['err' => 'Unvalid class name'];
+    }
+
+    public function addSelf()
+    {
+
+        return $this->addToMap('euclidMap', get_class($this), '*Map', true);
+
+    }
+
+    public function initMap($path)
+    {
         $content = $this->getConfigFileContent($path);
-        if ($content===false) {
-            return false;
-        }
-        if (!isset($this->configPath) || (isset($content['REDIRECT']) && $this->configPath == $content['REDIRECT'])) {
+        if (is_array($content) && !empty($content['maps'])) {
             $this->configPath = $path;
-        }
-        if (!isset($content['REDIRECT'])) {
-            return true;
-        }
-        unset($content['REDIRECT']);
-        return $this->saveEdits($path, $content);
-    }
-
-
-    public function setMapFromConfig($path = null)
-    {
-        $content = $this->getConfigFileContent($path);
-        if (!empty($content)) {
-            if (!empty($content['REDIRECT']) && $path !== $content['REDIRECT']) {
-                $nwpath = $content['REDIRECT'];
-                $nwcontent = $this->getConfigFileContent($nwpath);
-                if (!empty($nwcontent)) {
-                    $content = $nwcontent;
-                    $path = $nwpath;
-                }
-            }
             $this->cmdMap = $content['maps'];
-            $savefile = false;
+
             foreach ($this->cmdMap as $key => $data) {
-                if (empty($data["className"])) {
-                    unset($this->cmdMap[$key]);
-                    $savefile = true;
-                }
-                if (empty($data["cmdList"])) {
-                    $this->buildCmdList($key, $data);
-                    $savefile = true;
-                }
-            }
-            if ($savefile === true) {
-                $save = $this->saveEdits($path, $content);
-                if ($save === false) {
-                    return false;
-                }
-            }
-            
-            return true;
-        }
-        return false;
-    }
-
-    public function saveEdits($path = null, $content = null)
-    {
-
-        if (empty($path)) {
-            $path = $this->getFallbackPath($path);
-        }
-        if (file_exists($path)) {
-
-            if (empty($content)) {
-                if (!empty($this->cmdMap)) {
-                    $content = ["maps"=>$this->cmdMap];
+                if (empty($data["className"]) || !class_exists($data["className"], true)) {
+                    $this->handleUnvalidClass($key);
                 } else {
-                    $content = ["maps"=>[]];
+                    $this->buildCmdList($key, $data);
                 }
             }
-            return file_put_contents($path, json_encode($content, JSON_PRETTY_PRINT), LOCK_EX);
+
+            return $this->getMap();
         }
+        return ['err' => 'Unvalid config file'];
+    }
+
+    protected function processPath($path)
+    {
+        if (!empty($path) && file_exists($path)) {
+            return $path;
+        }
+
+        if (empty($path) && !empty($this->configPath)) {
+            return $this->configPath;
+        }
+
         return false;
     }
 
-    public function addToMap($key, $className, $methodHook = null)
+    public function saveMap($anotherPath = false)
     {
-        $classdata = [
-            'className'=>$className
-        ];
-        if(!empty($methodHook)){
-            $classdata['methodHook'] = $methodHook;
+        $path = $this->processPath($anotherPath);
+        if ($path !== false) {
+            $save = Jack::File()->saveJson(["maps" => $this->cmdMap], $path);
+            if ($save !== false) {
+                return $this->getMap();
+            }
         }
-        $this->cmdMap[$key] = $classdata;
-        return $this->buildCmdList($key, $classdata);
+        return ['err' => 'Unvalid path or chmod permissions'];
     }
 
-    public function remvFromMap($key)
+    public function addToMap($key, $className, $methodHook = null, $prepend = false)
     {
-        if (isset($this->cmdMap[$key])) {
-            unset($this->cmdMap[$key]);
+        if (class_exists($className, true)) {
+            $classdata = [
+                'className' => $className,
+            ];
+            if (!empty($methodHook)) {
+                $classdata['methodHook'] = $methodHook;
+            }
+            if ($prepend) {
+                $this->cmdMap = [$key => $classdata] + $this->cmdMap;
+            } else {
+                $this->cmdMap[$key] = $classdata;
+            }
+
+            return $this->buildCmdList($key, $classdata);
         }
-        return true;
+        return ['err' => $className . ' is not a valid class'];
     }
 
-    public function updateMap($key, $value, $jsonkey)
+    public function rmvFromMap($key)
     {
-        if (isset($this->cmdMap[$key]) && in_array($jsonkey, ['className','methodHook'])) {
-            $this->cmdMap[$key][$jsonkey] = $value;
-            $this->buildCmdList($key, $this->cmdMap[$key]);
+        unset($this->cmdMap[$key]);
+
+        return $this->getMap();
+    }
+
+    public function updtMap($key, $value, $prop)
+    {
+        if (isset($this->cmdMap[$key]) && in_array($prop, ['className', 'methodHook'])) {
+            $this->cmdMap[$key][$prop] = $value;
+            return $this->buildCmdList($key, $this->cmdMap[$key]);
         }
-        return false;
+        return ['err' => 'Unvalid arguments'];
     }
 
     public function getMap()
     {
-        if (empty($this->cmdMap)) {
-            if ($this->setMapFromConfig() === false) {
-                return false;
-            }
-        }
         return $this->cmdMap;
     }
-   
-    public function buildCmdList($key, $classdata = null)
+
+    protected function buildCmdList($key, $classdata = null)
     {
         $cmdMap = $this->getMap();
-        if ($cmdMap === false) {
-            return false;
+
+        if (empty($cmdMap) || ($classdata === null && !isset($cmdMap[$key]))) {
+            return ['err' => $key . ' is not in cmd map'];
         }
         if ($classdata === null) {
-            if (!isset($cmdMap[$key])) {
-                return false;
-            }
             $classdata = $cmdMap[$key];
         }
-        if (!empty($classdata['className'])) {
-            $classn = $classdata['className'];
-            $class = new $classn();
-            $hook = false;
-            if (!empty($classdata['methodHook'])) {
-                $hook = $classdata['methodHook'];
-            }
-            $methods = get_class_methods($class);
-            $list = [];
-            foreach ($methods as $methodn) {
-                if (!empty($methodn)) {
-                    if (empty($hook) || $hook === $methodn) {
-                        $list[$methodn] = $this->getParamList($classn, $methodn);
-                    } elseif (stripos($methodn, str_replace("*", "", $hook)) !== false) {
-                        $hooklen = strlen($hook)-1;
-                        if ($hook[0] === '*') {
-                            $methodkey = substr($methodn, 0, -$hooklen);
-                        } else {
-                            $methodkey = substr($methodn, $hooklen);
-                        }
-                        $list[$methodkey] = $this->getParamList($classn, $methodn);
-                    }
+        if (empty($classdata['className']) || !class_exists($classdata['className'], true)) {
+            return $this->handleUnvalidClass($key);
+
+        }
+        $classn = $classdata['className'];
+        $hook = false;
+        if (!empty($classdata['methodHook'])) {
+            $hook = $classdata['methodHook'];
+        }
+
+        $methods = get_class_methods($classn);
+        $list = [];
+        foreach ($methods as $methodn) {
+            if (!empty($methodn)) {
+                if (empty($hook) || $hook === $methodn || stripos($methodn, str_replace("*", "", $hook)) !== false) {
+                    $list[$methodn] = $this->getParamList($classn, $methodn);
                 }
             }
+        }
 
-            if (!empty($list)) {
-                $cmdMap[$key]['cmdList'] = $list;
-                $this->cmdMap = $cmdMap;
-                return true;
-            }
+        if (!empty($list)) {
+            $cmdMap[$key]['cmdList'] = $list;
+            $this->cmdMap = $cmdMap;
+            return $cmdMap;
         }
-        return false;
-    }
-    
-    protected function getDlftConfigPath()
-    {
-        return dirname(__DIR__).$this->dflt_config_path;
-    }
 
-    protected function getFallbackPath($path)
-    {
-        if(!empty($path) && file_exists($path)){
-            return $path;
-        }
-        if (!empty($this->configPath)) {
-            return $this->configPath;
-        }
-        return $this->getDlftConfigPath();
+        return ['err' => 'Class ' . $key . ' has no eligible method'];
+
     }
 
     protected function getConfigFileContent($path = null)
     {
-        if (empty($path)) {
-            $path = $this->getFallbackPath($path);
-        }
-        if (file_exists($path)) {
-            return json_decode(file_get_contents($path), true);
-        }
-        return false;
+        $path = $this->processPath($path);
+        return Jack::File()->readJson($path);
     }
-    
+
     protected function getParamList($classn, $method)
     {
         $reflc = new \ReflectionMethod($classn, $method);

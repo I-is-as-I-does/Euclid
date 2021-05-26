@@ -1,6 +1,6 @@
 {
     "name": "ssitu/euclid",
-    "description": "Simple PHP tool to map your classes and methods, so you can execute them from the comfort of your command line interface.",
+    "description": "A PHP tool to map your classes and methods, so you can execute them from the comfort of your command line interface.",
     "type": "library",
     "keywords" :["php", "CLI"],
     "homepage":"https://github.com/I-is-as-I-does/Euclid",
@@ -13,11 +13,12 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "ssitu/jacktrades": "^2.0"
+    },
     "autoload": {
         "psr-4": {
-            "SSITU\\Euclid\\": "src",
-            "SSITU\\Demo\\Euclid\\": "demo"
+            "SSITU\\Euclid\\": "src"
         }
     }
 }

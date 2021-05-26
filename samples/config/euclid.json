@@ -1,0 +1,8 @@
+{
+  "maps": {
+    "classKeyName": {
+      "className": "Class\\Namespace\\AndName",
+      "methodHook": "*someSuffix"
+    }
+  }
+}

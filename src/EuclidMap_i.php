@@ -4,13 +4,13 @@ namespace SSITU\Euclid;
 
 interface EuclidMap_i
 {
-    public function setCustomConfigPath($path, $permanent = false);
-    public function unsetPermanentCustomConfigPath();
-    public function setMapFromConfig($path = null);
-    public function addToMap($key, $className, $methodHook = null);
-    public function remvFromMap($key);
-    public function updateMap($key, $value, $jsonkey); //@doc: $jsonkey is either 'className' or 'methodHook';
-    public function saveEdits($path = null, $content = null);
-    public function buildCmdList($key, $classdata = null);
+    public function __construct($path = null);
+    public function initMap($path);
+    public function addToMap($key, $className, $methodHook = null, $prepend = false);
+    public function rmvFromMap($key);
+    public function updtMap($key, $value, $prop); //@doc: $prop is either 'className' or 'methodHook';
+    public function saveMap($anotherPath = false);
     public function getMap();
+    public function getLogErr();
+    public function addSelf();
 }
