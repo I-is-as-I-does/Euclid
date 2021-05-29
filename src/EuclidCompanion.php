@@ -101,54 +101,65 @@ class EuclidCompanion implements EuclidCompanion_i
         }
     }
 
-    public static function output($out, $color = 'auto', $b1 = '[', $b2 = '] ')
+    public static function output($out, $color = 'auto', $b1 = '[', $b2 = ']')
     {
         if (!is_array($out)) {
-            $out = [$out];
+            return self::msg($out, self::defineColor($out, $color), true);
         }
-        $lentarg = Jack::Help()->arrayLongestKey($out) - 1 + strlen($b1 . $b2);
 
         foreach ($out as $k => $v) {
-
-            $wrapedk = $b1 . $k . $b2 . \str_repeat(' ', $lentarg - strlen($k));
-
+            $wrapK = $b1 . $k . $b2;
+            echo self::msg($wrapK, self::defineColor($k, $color), false);
+            $rslt = Jack::Help()->flattenOutput($v);
             if (is_array($v)) {
-                $dupv = $v;
-                while (is_array($dupv[array_key_first($dupv)])) {
-                    $dupv = $dupv[array_key_first($dupv)];
-                }
-                $crrcolor = self::autoColor(array_key_first($dupv), $dupv, $color);
-                echo self::msg($wrapedk, $crrcolor, false);
-                if (!is_array($v[array_key_first($v)])) {
-                    echo PHP_EOL;
-                }
-                self::output($v, $color);
+                echo PHP_EOL;
+            }
 
-            } else {
-                echo self::msg($wrapedk, self::autoColor($k, $v, $color), false);
-                self::msg(' ' . $v, $color, true);
+            $lentarg1 = Jack::Help()->arrayLongestKey($rslt) + 1;
+
+            $mkey = [];
+            $mval = [];
+            foreach ($rslt as $itmk => $itmv) {
+                $splitk = explode('.', $itmk);
+                $first = array_pop($splitk);
+                $mkey[] = $first;
+                $thenk = trim(implode('.', $splitk), '.');
+                $spacing1 = \str_repeat(' ', $lentarg1 - strlen($first) - strlen($thenk));
+                $mval[] = $thenk . $spacing1 . $itmv;
+            }
+            $lentarg2 = Jack::Help()->arrayLongestItem($mkey) + 1;
+            foreach ($mkey as $sk => $sv) {
+                $spacing2 = \str_repeat(' ', $lentarg2 - strlen($sv));
+                echo self::msg($sv . $spacing2, self::defineColor($sv, $color), false);
+                self::msg($mval[$sk], self::defineColor($mval[$sk], $color), true);
             }
         }
-
     }
 
-    public static function autoColor($k, $v, $color)
+    public static function defineColor($item, $color)
     {
-        if ($color == 'auto') {
+        if ($color === 'auto') {
 
-            if (in_array($k, ['return', 'class', 'method'])) {
-                $color = 'cyan';
-            } elseif (in_array($k, ['todo', 'partial', 'skipped'])) {
-                $color = 'yellow';
-            } elseif ($k == 'err' || (is_string($v) && substr($v, 0, 4) == 'fail')) {
-                $color = 'red';
-            } elseif ($k == 'success' || (is_string($v) && substr($v, 0, 7) == 'success')) {
+            if (is_array($item)) {
+                $color = 'blue';
+            } elseif (is_bool($item)) {
                 $color = 'green';
-            } elseif (is_array($v)) {
-                $color = 'cyan';
-            } else {
-                $color = 'white';
+                if ($item === false) {
+                    $color = 'red';
+                }
+            } elseif (is_string($item)) {
+
+                if (in_array($item, ['return', 'class', 'method'])) {
+                    $color = 'cyan';
+                } elseif (in_array($item, ['todo', 'partial', 'partials', 'skipped', 'anomaly', 'anomalies'])) {
+                    $color = 'yellow';
+                } elseif (in_array($item, ['false', 'err', 'fail', 'error', 'critic'])) {
+                    $color = 'red';
+                } elseif (in_array($item, ['true', 'success', 'done', 'ok'])) {
+                    $color = 'green';
+                }
             }
+
         }
         return $color;
     }
@@ -190,7 +201,7 @@ class EuclidCompanion implements EuclidCompanion_i
                 $introMsg = self::$dfltIntroMsg;
             }
 
-            $this->output($this->callableMap, $listcolor, '', ' ');
+            $this->output($this->callableMap, $listcolor, '', '');
             echo $introMsg;
             return $this->listenToRequest();
         }

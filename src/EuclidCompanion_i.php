@@ -17,6 +17,6 @@ interface EuclidCompanion_i
     public static function parseArrayArgm($array);
     public static function msg($msg, $color = 'white', $echomsg = true);
     public static function output($out, $color = 'auto', $brackets = true);
-    public static function autoColor($k, $v, $color);
+    public static function defineColor($item, $color);
 
 }

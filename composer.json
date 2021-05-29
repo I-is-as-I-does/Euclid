@@ -14,7 +14,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "ssitu/jacktrades": "^2.0"
+        "ssitu/jacktrades": "^2.1"
     },
     "autoload": {
         "psr-4": {
