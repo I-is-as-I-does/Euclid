@@ -2,7 +2,7 @@
 /* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
 namespace SSITU\Euclid;
 
-use SSITU\JackTrades\Jack;
+use SSITU\Jack\Jack;
 
 class EuclidGuided implements EuclidGuided_i
 {
