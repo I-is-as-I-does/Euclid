@@ -110,24 +110,28 @@ class EuclidCompanion implements EuclidCompanion_i
         foreach ($out as $k => $v) {
             $wrapK = $b1 . $k . $b2;
             echo self::msg($wrapK, self::defineColor($k, $color), false);
-            $rslt = Jack::Help()->flattenOutput($v);
+            $rslt = Jack::Arrays()->flatten($v);
             if (is_array($v)) {
                 echo PHP_EOL;
             }
 
-            $lentarg1 = Jack::Help()->arrayLongestKey($rslt) + 1;
+            $lentarg1 = Jack::Arrays()->longestKey($rslt) + 1;
 
             $mkey = [];
             $mval = [];
             foreach ($rslt as $itmk => $itmv) {
                 $splitk = explode('.', $itmk);
-                $first = array_pop($splitk);
+
+                $first = array_shift($splitk);
+                if (empty($first)) {
+                    $first = array_shift($splitk);
+                }
                 $mkey[] = $first;
                 $thenk = trim(implode('.', $splitk), '.');
                 $spacing1 = \str_repeat(' ', $lentarg1 - strlen($first) - strlen($thenk));
                 $mval[] = $thenk . $spacing1 . $itmv;
             }
-            $lentarg2 = Jack::Help()->arrayLongestItem($mkey) + 1;
+            $lentarg2 = Jack::Arrays()->longestItem($mkey) + 1;
             foreach ($mkey as $sk => $sv) {
                 $spacing2 = \str_repeat(' ', $lentarg2 - strlen($sv));
                 echo self::msg($sv . $spacing2, self::defineColor($sv, $color), false);

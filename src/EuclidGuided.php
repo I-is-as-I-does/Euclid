@@ -22,7 +22,7 @@ class EuclidGuided implements EuclidGuided_i
     {
         $this->EuclidCore->goBackTo = 'modeMenu';
         if (empty($this->classMenu)) {
-            $this->classMenu = $this->EuclidCore->getNavigation() + Jack::Help()->reIndexArray(array_keys($this->EuclidCore->cmdMap), 1);
+            $this->classMenu = $this->EuclidCore->getNavigation() + Jack::Arrays()->reIndex(array_keys($this->EuclidCore->cmdMap), 1);
         } else {
             $this->EuclidCore->resetAll();
         }
@@ -59,7 +59,7 @@ class EuclidGuided implements EuclidGuided_i
         }
         $this->EuclidCore->goBackTo = 'classMenu';
         $this->EuclidCore->resetMethodParam();
-        $methodMenu = $this->EuclidCore->getNavigation() + Jack::Help()->reIndexArray(array_keys($this->EuclidCore->classData['cmdList']), 1);
+        $methodMenu = $this->EuclidCore->getNavigation() + Jack::Arrays()->reIndex(array_keys($this->EuclidCore->classData['cmdList']), 1);
         $this->Companion->set_callableMap($methodMenu);
         $requestk = $this->Companion->printCallableAndListen('Pick a method > ');
         $dispatch = $this->processGuidedRequest($requestk);
