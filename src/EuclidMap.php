@@ -1,9 +1,7 @@
 <?php
 /* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
 namespace SSITU\Euclid;
-
-use SSITU\Jack\Jack;
-
+use \SSITU\Jack;
 class EuclidMap implements EuclidMap_i
 {
     protected $configPath;
@@ -73,7 +71,7 @@ class EuclidMap implements EuclidMap_i
     {
         $path = $this->processPath($anotherPath);
         if ($path !== false) {
-            $save = Jack::File()->saveJson(["maps" => $this->cmdMap], $path);
+            $save = Jack\File::saveJson(["maps" => $this->cmdMap], $path);
             if ($save !== false) {
                 return $this->getMap();
             }
@@ -165,7 +163,7 @@ class EuclidMap implements EuclidMap_i
     protected function getConfigFileContent($path = null)
     {
         $path = $this->processPath($path);
-        return Jack::File()->readJson($path);
+        return Jack\File::readJson($path);
     }
 
     protected function getParamList($classn, $method)

@@ -1,9 +1,7 @@
 <?php
 /* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
 namespace SSITU\Euclid;
-
-use SSITU\Jack\Jack;
-
+use \SSITU\Jack;
 class EuclidGuided implements EuclidGuided_i
 {
     private $constructMenu = [1 => 'Just call class constructor', 2 => 'Set a method to call afterward'];
@@ -22,7 +20,7 @@ class EuclidGuided implements EuclidGuided_i
     {
         $this->EuclidCore->goBackTo = 'modeMenu';
         if (empty($this->classMenu)) {
-            $this->classMenu = $this->EuclidCore->getNavigation() + Jack::Arrays()->reIndex(array_keys($this->EuclidCore->cmdMap), 1);
+            $this->classMenu = $this->EuclidCore->getNavigation()+Jack\Array::reIndex(array_keys($this->EuclidCore->cmdMap), 1);
         } else {
             $this->EuclidCore->resetAll();
         }
@@ -59,7 +57,7 @@ class EuclidGuided implements EuclidGuided_i
         }
         $this->EuclidCore->goBackTo = 'classMenu';
         $this->EuclidCore->resetMethodParam();
-        $methodMenu = $this->EuclidCore->getNavigation() + Jack::Arrays()->reIndex(array_keys($this->EuclidCore->classData['cmdList']), 1);
+        $methodMenu = $this->EuclidCore->getNavigation()+Jack\Array::reIndex(array_keys($this->EuclidCore->classData['cmdList']), 1);
         $this->Companion->set_callableMap($methodMenu);
         $requestk = $this->Companion->printCallableAndListen('Pick a method > ');
         $dispatch = $this->processGuidedRequest($requestk);

@@ -1,9 +1,7 @@
 <?php
 /* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
 namespace SSITU\Euclid;
-
-use SSITU\Jack\Jack;
-
+use \SSITU\Jack;
 class EuclidCompanion implements EuclidCompanion_i
 {
     private $callableMap;
@@ -110,12 +108,12 @@ class EuclidCompanion implements EuclidCompanion_i
         foreach ($out as $k => $v) {
             $wrapK = $b1 . $k . $b2;
             echo self::msg($wrapK, self::defineColor($k, $color), false);
-            $rslt = Jack::Arrays()->flatten($v);
+            $rslt = Jack\Array::flatten($v);
             if (is_array($v)) {
                 echo PHP_EOL;
             }
 
-            $lentarg1 = Jack::Arrays()->longestKey($rslt) + 1;
+            $lentarg1 = Jack\Array::longestKey($rslt) + 1;
 
             $mkey = [];
             $mval = [];
@@ -131,7 +129,7 @@ class EuclidCompanion implements EuclidCompanion_i
                 $spacing1 = \str_repeat(' ', $lentarg1 - strlen($first) - strlen($thenk));
                 $mval[] = $thenk . $spacing1 . $itmv;
             }
-            $lentarg2 = Jack::Arrays()->longestItem($mkey) + 1;
+            $lentarg2 = Jack\Array::longestItem($mkey) + 1;
             foreach ($mkey as $sk => $sv) {
                 $spacing2 = \str_repeat(' ', $lentarg2 - strlen($sv));
                 echo self::msg($sv . $spacing2, self::defineColor($sv, $color), false);
