@@ -1,7 +1,7 @@
 <?php
 /* This file is part of Euclid | SSITU | (c) 2021 I-is-as-I-does | MIT License */
 namespace SSITU\Euclid;
-use \SSITU\Jack;
+
 class EuclidCompanion implements EuclidCompanion_i
 {
     private $callableMap;
@@ -99,6 +99,23 @@ class EuclidCompanion implements EuclidCompanion_i
         }
     }
 
+    public static function flatten($itm, $out = [], $key = '')
+    {
+        if (is_array($itm)) {
+            foreach ($itm as $k => $v) {
+                $out = self::flatten($v, $out, trim($key . '.' . $k, '.'));
+            }
+        } else {
+            $out[$key] = $itm;
+        }
+        return $out;
+    }
+
+    public static function maxStrlenPlusOne($arr)
+    {
+        return max(array_map('strlen', $arr)) + 1;
+    }
+
     public static function output($out, $color = 'auto', $b1 = '[', $b2 = ']')
     {
         if (!is_array($out)) {
@@ -108,12 +125,12 @@ class EuclidCompanion implements EuclidCompanion_i
         foreach ($out as $k => $v) {
             $wrapK = $b1 . $k . $b2;
             echo self::msg($wrapK, self::defineColor($k, $color), false);
-            $rslt = Jack\Array::flatten($v);
+            $rslt = self::flatten($v);
             if (is_array($v)) {
                 echo PHP_EOL;
             }
-
-            $lentarg1 = Jack\Array::longestKey($rslt) + 1;
+            
+            $lentarg1 = self::maxStrlenPlusOne(array_keys($rslt));
 
             $mkey = [];
             $mval = [];
@@ -129,7 +146,7 @@ class EuclidCompanion implements EuclidCompanion_i
                 $spacing1 = \str_repeat(' ', $lentarg1 - strlen($first) - strlen($thenk));
                 $mval[] = $thenk . $spacing1 . $itmv;
             }
-            $lentarg2 = Jack\Array::longestItem($mkey) + 1;
+            $lentarg2 = self::maxStrlenPlusOne($mkey);
             foreach ($mkey as $sk => $sv) {
                 $spacing2 = \str_repeat(' ', $lentarg2 - strlen($sv));
                 echo self::msg($sv . $spacing2, self::defineColor($sv, $color), false);
